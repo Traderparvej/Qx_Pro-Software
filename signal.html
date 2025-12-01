@@ -45,14 +45,13 @@
     .brand p{font-size:11px;color:var(--muted)}
 
     .content{
-      display:grid;
-      grid-template-columns:1fr 1fr;
+      display:flex;
+      flex-direction:column;
       gap:12px;
       height:calc(100% - 60px);
     }
 
-    /* Zig-zag placement: even index right, odd index left */
-    .panel, .right-card{
+    .panel{
       border-radius:var(--radius);
       padding:12px;
       box-shadow:0 6px 30px rgba(2,6,23,0.6);
@@ -85,33 +84,18 @@
     .meta{background:rgba(255,255,255,0.02);padding:4px;border-radius:8px;text-align:center}
     .meta small{display:block;color:var(--muted)}
     .meta strong{display:block;font-weight:700;margin-top:2px}
+
     .footer{margin-top:6px;color:var(--muted);font-size:10px;text-align:center}
+
     .pulse{animation:pulse 2s infinite}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
 
-    @media(max-width:880px){
-      .content{
-        display:flex;
-        flex-direction:column;
-        height:auto;
-      }
-      .panel, .right-card{width:100%;height:auto;margin-bottom:6px}
-    }
-
-    @media(max-width:480px){
-      .logo{width:40px;height:40px;font-size:16px}
-      .brand h1{font-size:16px}
-      .brand p{font-size:10px}
-      .btn{font-size:11px;padding:6px}
-      .pair{font-size:12px}
-      .pill{font-size:10px;padding:3px 6px}
-      .signal-meta{grid-template-columns:1fr;gap:3px;font-size:9px}
-      .meta{padding:3px;border-radius:6px}
-    }
   </style>
 </head>
 <body>
+
   <div class="wrap">
+
     <header>
       <div class="brand">
         <div class="logo">Qx</div>
@@ -128,8 +112,11 @@
       </div>
     </header>
 
+
     <div class="content">
+
       <div class="panel">
+
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:10px">
           <div>
             <div style="color:var(--muted)">Current Time</div>
@@ -156,37 +143,30 @@
 
         <div class="signal-card pulse" id="signalCard">
           <div class="signal-row">
-            <div><div class="pair" id="pair">USDDZD-OTC</div><div style="color:var(--muted);font-size:10px;margin-top:2px">Bullish Signal 🔺</div></div>
+            <div>
+              <div class="pair" id="pair">USDDZD-OTC</div>
+              <div style="color:var(--muted);font-size:10px;margin-top:2px">Bullish Signal 🔺</div>
+            </div>
+
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
               <div class="pill call" id="direction">CALL</div>
               <div style="color:var(--muted);font-size:10px">High</div>
             </div>
           </div>
+
           <div class="signal-meta">
             <div class="meta"><small>Scan Time</small><strong id="scanTime">08:32 PM</strong></div>
             <div class="meta"><small>Expiry</small><strong id="expiry">1 MIN</strong></div>
             <div class="meta"><small>Trade Time</small><strong id="tradeTime">08:35 PM</strong></div>
           </div>
+
         </div>
       </div>
 
-      <div class="right-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-          <div><div class="small">Connected Asset</div><div style="font-weight:700" id="sideAsset">USDARE-OTC</div></div>
-          <div style="text-align:right"><div class="small">Win Rate</div><div class="meter" id="sideWin">93.74%</div></div>
-        </div>
-        <div style="height:6px;margin:6px 0;background:rgba(255,255,255,0.04);border-radius:6px;overflow:hidden">
-          <div id="winBar" style="height:100%;width:93.74%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:6px"></div>
-        </div>
-        <div style="margin-top:6px"><div class="small">Auto Scan Status</div><div style="margin-top:2px;font-weight:700" id="autoStatus">Enabled • 1m</div></div>
-        <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">
-          <button class="btn scan" style="flex:1">Set Asset</button>
-          <button class="btn auto" style="flex:1">Settings</button>
-        </div>
-      </div>
     </div>
 
     <div class="footer">Last update: <span id="lastUpdate">—</span> • Scanning market data… ⏳</div>
+
   </div>
 
   <script>
@@ -201,7 +181,6 @@
       const pair = demoPairs[randomBetween(0,demoPairs.length-1)];
       const isCall = Math.random()>.4;
       document.getElementById('pair').textContent = pair;
-      document.getElementById('sideAsset').textContent = pair;
       document.getElementById('asset').textContent = pair;
       document.getElementById('direction').textContent = isCall? 'CALL' : 'PUT';
       document.getElementById('direction').className = 'pill ' + (isCall? 'call':'put');
@@ -210,8 +189,6 @@
       document.getElementById('expiry').textContent = '1 MIN';
       const win = (90 + Math.random()*8).toFixed(2);
       document.getElementById('win').textContent = win + '%';
-      document.getElementById('sideWin').textContent = win + '%';
-      document.getElementById('winBar').style.width = win + '%';
       document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
       const card = document.getElementById('signalCard');
       card.classList.remove('pulse'); void card.offsetWidth; card.classList.add('pulse');
@@ -224,5 +201,6 @@
       document.getElementById('direction').textContent='—';
     });
   </script>
+
 </body>
 </html>
