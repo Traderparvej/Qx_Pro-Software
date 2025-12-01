@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Qx_Pro — Login</title>
+  <style>
+    :root{--bg1:#081226;--bg2:#062033;--accent:#00e0a3;--accent2:#24b3ff;--card:#0f2533;--muted:rgba(255,255,255,0.65)}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,Arial;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eaf6f2}
+
+    .container{width:980px;max-width:96%;display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:flex-start}
+
+    .left{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:28px;border-radius:16px;box-shadow:0 20px 50px rgba(2,6,23,0.6)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-weight:800;color:#042029}
+    h1{margin:12px 0 2px 0;font-size:20px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    form{margin-top:18px;display:flex;flex-direction:column;gap:12px}
+    label{font-size:12px;color:var(--muted)}
+    input[type="text"],input[type="password"],input[type="email"]{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:inherit;font-size:14px}
+    .row{display:flex;gap:8px}
+    .btn{padding:12px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#042029}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    .extra{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-top:6px}
+    .remember{display:flex;align-items:center;gap:8px}
+    .small-link{color:var(--accent);text-decoration:none;font-weight:600}
+
+    .right{display:flex;align-items:center;justify-content:center}
+    .card{width:100%;padding:28px;border-radius:16px;background:linear-gradient(135deg,rgba(0,224,163,0.03),rgba(36,179,255,0.02));border:1px solid rgba(255,255,255,0.02);box-shadow:0 18px 40px rgba(2,6,23,0.5)}
+    .card h3{margin:0 0 8px 0}
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    .feature{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px}
+    .muted{color:var(--muted)}
+
+    .error{color:#ff6b6b;font-size:13px}
+
+    /* responsive */
+    @media (max-width:880px){.container{grid-template-columns:1fr;}.right{order:-1}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <div class="brand">
+        <div class="logo">Qx</div>
+        <div>
+          <h1>Qx_Pro Signal</h1>
+          <p class="lead">Access your real‑time market signals and secure trading panel.</p>
+        </div>
+      </div>
+
+      <form id="loginForm" autocomplete="off">
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@domain.com" required />
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <div style="position:relative">
+            <input id="password" name="password" type="password" placeholder="Enter your password" required />
+            <button type="button" id="togglePwd" style="position:absolute;right:8px;top:8px;padding:6px;border-radius:6px;border:none;background:transparent;color:var(--muted);cursor:pointer">👁</button>
+          </div>
+        </div>
+
+        <div class="extra" style="justify-content:center;margin-top:2px;">
+          <a href="https://t.me/TraderParvej" class="small-link" style="font-size:14px">Support Center — Telegram (@TraderParvej)</a>
+        </div>
+
+        <div>
+          <button class="btn primary" type="submit">Sign In</button>
+        </div>
+
+        <div id="error" class="error" role="alert" style="display:none;margin-top:8px"></div>
+      </form>
+    </div>
+
+    <div class="right">
+      <div class="card">
+        <h3>Why Qx_Pro?</h3>
+        <p class="muted" style="margin:6px 0 12px 0">Fast signals • Low-latency UI • Premium indicators</p>
+        <div class="features">
+          <div class="feature"><strong>Live Signals</strong><div class="muted" style="margin-top:6px;font-size:13px">Real-time call/put alerts</div></div>
+          <div class="feature"><strong>Auto Scan</strong><div class="muted" style="margin-top:6px;font-size:13px">Continuous 1m scanning</div></div>
+          <div class="feature"><strong>Win Rate</strong><div class="muted" style="margin-top:6px;font-size:13px">High performance tracking</div></div>
+          <div class="feature"><strong>Secure</strong><div class="muted" style="margin-top:6px;font-size:13px">Encrypted credentials & tokens</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fixed login: username = QxPro, password = @QxPro
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault(); errorEl.style.display='none';
+      const email = form.email.value.trim();
+      const pwd = form.password.value;
+
+      if(!email || !pwd){ showError('Please enter both fields.'); return; }
+
+      // Fixed credentials
+      if(email !== 'QxPro' || pwd !== '@QxPro'){
+        showError('Invalid username or password.');
+        return;
+      }
+
+      localStorage.setItem('qx_auth','fixed-login');
+      localStorage.setItem('qx_user', email);
+
+      window.location.href = 'dashboard.html';
+    });
+    });
+
+    function showError(msg){ errorEl.textContent = msg; errorEl.style.display='block'; }
+
+    // Quick demo buttons
+    document.getElementById('google').addEventListener('click', ()=> alert('Demo: integrate Google OAuth / Firebase here.'));
+    document.getElementById('phone').addEventListener('click', ()=> alert('Demo: integrate phone auth here.'));
+    document.getElementById('forgot').addEventListener('click', (e)=>{ e.preventDefault(); alert('Demo: password reset flow.'); });
+    document.getElementById('signup').addEventListener('click', (e)=>{ e.preventDefault(); alert('Demo: signup flow.'); });
+  </script>
+</body>
+</html>
