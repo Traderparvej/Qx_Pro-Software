@@ -24,8 +24,8 @@
 
     .wrap{width:980px;max-width:96%;}
 
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-    .brand{display:flex;gap:12px;align-items:center}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap}
+    .brand{display:flex;gap:12px;align-items:center;margin-bottom:10px}
     .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042029;box-shadow:var(--neon)}
     .brand h1{margin:0;font-size:20px;letter-spacing:0.4px}
     .brand p{margin:0;font-size:12px;color:var(--muted)}
@@ -40,7 +40,7 @@
     .stat small{color:var(--muted);font-size:12px}
     .stat strong{font-size:18px;margin-top:6px}
 
-    .controls{display:flex;gap:12px;margin-top:12px}
+    .controls{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
     .btn{flex:1;padding:12px 14px;border-radius:12px;text-align:center;font-weight:600;cursor:pointer;border:none}
     .btn.scan{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#072227;box-shadow:var(--neon)}
     .btn.auto{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
@@ -48,13 +48,14 @@
 
     /* Right column - quick info */
     .right-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px}
+
     .live-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff4d67;margin-right:8px;box-shadow:0 6px 18px rgba(255,77,103,0.12)}
     .meter{font-size:22px;font-weight:700}
     .small{font-size:13px;color:var(--muted)}
 
     /* Signal card */
     .signal-card{margin-top:18px;padding:16px;border-radius:14px;background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));border:1px solid rgba(0,224,163,0.08);box-shadow:0 14px 40px rgba(2,6,23,0.6)}
-    .signal-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .signal-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
     .pair{font-size:18px;font-weight:800}
     .pill{padding:8px 12px;border-radius:999px;font-weight:700}
     .call{background:linear-gradient(90deg,rgba(0,224,163,0.12),rgba(0,224,163,0.08));color:var(--accent);border:1px solid rgba(0,224,163,0.2)}
@@ -73,8 +74,22 @@
 
     /* responsive */
     @media (max-width:880px){
-      .top-stats{grid-template-columns:1fr}
-      .right-card{order:-1}
+      .top-stats{grid-template-columns:1fr;gap:14px}
+      .right-card{order:-1;margin-bottom:16px}
+      .status-grid{grid-template-columns:1fr;gap:12px}
+      .controls{flex-direction:column}
+      .signal-row{flex-direction:column;align-items:flex-start;gap:10px}
+      .signal-meta{grid-template-columns:1fr;gap:10px}
+    }
+    @media (max-width:480px){
+      body{padding:14px;}
+      .wrap{width:100%;padding:0;}
+      .logo{width:48px;height:48px;font-size:18px}
+      .brand h1{font-size:18px}
+      .brand p{font-size:11px}
+      .btn{font-size:14px;padding:10px}
+      .signal-card{padding:12px}
+      .pill{padding:6px 10px;font-size:14px}
     }
   </style>
 </head>
@@ -98,7 +113,7 @@
 
     <div class="top-stats">
       <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
           <div>
             <div style="font-size:13px;color:var(--muted)">Current Time</div>
             <div id="timeLarge" style="font-size:24px;font-weight:800;margin-top:6px">--:--:--</div>
@@ -156,7 +171,7 @@
       </div>
 
       <aside class="right-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
           <div>
             <div class="small">Connected Asset</div>
             <div style="font-weight:800;margin-top:6px" id="sideAsset">USDARE-OTC</div>
@@ -176,7 +191,7 @@
           <div style="margin-top:8px;font-weight:700" id="autoStatus">Enabled • 1m</div>
         </div>
 
-        <div style="margin-top:16px;display:flex;gap:10px">
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn scan" style="flex:1">Set Asset</button>
           <button class="btn auto" style="flex:1">Settings</button>
         </div>
@@ -187,13 +202,11 @@
   </div>
 
   <script>
-    // Simple UI demo logic — replace with your real signal source (WebSocket / API)
     function pad(n){return n.toString().padStart(2,'0')}
     function nowStr(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())}
     function updateClock(){document.getElementById('timeLarge').textContent = nowStr(); document.getElementById('lastUpdate').textContent = new Date().toLocaleString();}
     setInterval(updateClock,1000); updateClock();
 
-    // Demo: simulate incoming signals every 12s
     const demoPairs = ['USDDZD-OTC','EUR/USD','GBP/JPY','AUD/CAD'];
     function randomBetween(a,b){return Math.floor(Math.random()*(b-a+1))+a}
     function showSignal(){
@@ -207,23 +220,21 @@
       document.getElementById('scanTime').textContent = new Date().toLocaleTimeString();
       document.getElementById('tradeTime').textContent = new Date(Date.now()+3*60*1000).toLocaleTimeString();
       document.getElementById('expiry').textContent = '1 MIN';
-      // win rate demo animation
       const win = (90 + Math.random()*8).toFixed(2);
       document.getElementById('win').textContent = win + '%';
       document.getElementById('sideWin').textContent = win + '%';
       document.getElementById('winBar').style.width = win + '%';
       document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
-      // small glow pulse
       const card = document.getElementById('signalCard');
       card.classList.remove('pulse'); void card.offsetWidth; card.classList.add('pulse');
     }
     setInterval(showSignal,12000);
     showSignal();
 
-    // Buttons (demo)
     document.getElementById('scanBtn').addEventListener('click', showSignal);
     document.getElementById('clearBtn').addEventListener('click', ()=>{
-      document.getElementById('pair').textContent='—'; document.getElementById('direction').textContent='—';
+      document.getElementById('pair').textContent='—'; 
+      document.getElementById('direction').textContent='—';
     });
   </script>
 </body>
