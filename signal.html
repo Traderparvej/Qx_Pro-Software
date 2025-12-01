@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Qx_Pro — Signal Dashboard</title>
+  <style>
+    :root{
+      --bg1:#0b1220; --bg2:#0f1b2b; --card:#0f2636; --accent:#00e0a3; --accent-2:#24b3ff; --muted:rgba(255,255,255,0.65);
+      --glass: rgba(255,255,255,0.03);
+      --neon: 0 8px 30px rgba(0,224,163,0.12);
+      --radius:16px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      background: linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#eaf6f2;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;display:flex;align-items:center;justify-content:center;
+    }
+
+    .wrap{width:980px;max-width:96%;}
+
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042029;box-shadow:var(--neon)}
+    .brand h1{margin:0;font-size:20px;letter-spacing:0.4px}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    .top-stats{display:grid;grid-template-columns:1fr 340px;gap:18px}
+
+    /* Left column - main panel */
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:18px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+
+    .status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .stat{background:var(--glass);padding:12px;border-radius:12px;display:flex;flex-direction:column;align-items:flex-start}
+    .stat small{color:var(--muted);font-size:12px}
+    .stat strong{font-size:18px;margin-top:6px}
+
+    .controls{display:flex;gap:12px;margin-top:12px}
+    .btn{flex:1;padding:12px 14px;border-radius:12px;text-align:center;font-weight:600;cursor:pointer;border:none}
+    .btn.scan{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#072227;box-shadow:var(--neon)}
+    .btn.auto{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .btn.clear{background:transparent;border:1px solid rgba(255,0,80,0.06);color:var(--muted)}
+
+    /* Right column - quick info */
+    .right-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:12px}
+    .live-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff4d67;margin-right:8px;box-shadow:0 6px 18px rgba(255,77,103,0.12)}
+    .meter{font-size:22px;font-weight:700}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Signal card */
+    .signal-card{margin-top:18px;padding:16px;border-radius:14px;background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));border:1px solid rgba(0,224,163,0.08);box-shadow:0 14px 40px rgba(2,6,23,0.6)}
+    .signal-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .pair{font-size:18px;font-weight:800}
+    .pill{padding:8px 12px;border-radius:999px;font-weight:700}
+    .call{background:linear-gradient(90deg,rgba(0,224,163,0.12),rgba(0,224,163,0.08));color:var(--accent);border:1px solid rgba(0,224,163,0.2)}
+    .put{background:linear-gradient(90deg,rgba(255,77,103,0.06),rgba(255,77,103,0.03));color:#ff607e;border:1px solid rgba(255,77,103,0.12)}
+
+    .signal-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    .meta{background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;text-align:center}
+    .meta small{display:block;color:var(--muted);font-size:12px}
+    .meta strong{display:block;margin-top:6px;font-size:16px}
+
+    .footer{margin-top:14px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* animations */
+    .pulse{animation:pulse 2s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+    /* responsive */
+    @media (max-width:880px){
+      .top-stats{grid-template-columns:1fr}
+      .right-card{order:-1}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">Qx</div>
+        <div>
+          <h1>Qx_Pro Live Signals</h1>
+          <p>Premium signal dashboard • sleek, low-latency UI</p>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:12px;color:var(--muted)">Status</div>
+        <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+          <span class="live-dot"></span><strong style="font-size:13px">LIVE</strong>
+        </div>
+      </div>
+    </header>
+
+    <div class="top-stats">
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:13px;color:var(--muted)">Current Time</div>
+            <div id="timeLarge" style="font-size:24px;font-weight:800;margin-top:6px">--:--:--</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;color:var(--muted)">Next Signal</div>
+            <div id="nextSignal" style="font-size:18px;font-weight:700">00:55</div>
+          </div>
+        </div>
+
+        <div class="status-grid" style="margin-top:14px">
+          <div class="stat">
+            <small>Connected Asset</small>
+            <strong id="asset">USDARE-OTC</strong>
+          </div>
+          <div class="stat">
+            <small>Win Rate</small>
+            <strong id="win">93.74%</strong>
+          </div>
+          <div class="stat">
+            <small>Scan Mode</small>
+            <strong id="scanMode">Auto (1m)</strong>
+          </div>
+          <div class="stat">
+            <small>Confidence</small>
+            <strong id="confidence">High</strong>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn scan" id="scanBtn">🔍 Scan Market Data</button>
+          <button class="btn auto" id="autoBtn">▶ Auto Scan</button>
+          <button class="btn clear" id="clearBtn">🗑 Clear</button>
+        </div>
+
+        <div class="signal-card pulse" id="signalCard" style="margin-top:16px;">
+          <div class="signal-row">
+            <div>
+              <div class="pair" id="pair">USDDZD-OTC</div>
+              <div style="color:var(--muted);font-size:13px;margin-top:6px">Bullish Signal 🔺</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <div class="pill call" id="direction">CALL</div>
+              <div style="font-size:13px;color:var(--muted)">High</div>
+            </div>
+          </div>
+
+          <div class="signal-meta">
+            <div class="meta"><small>Scan Time</small><strong id="scanTime">08:32 PM</strong></div>
+            <div class="meta"><small>Expiry</small><strong id="expiry">1 MIN</strong></div>
+            <div class="meta"><small>Trade Time</small><strong id="tradeTime">08:35 PM</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="right-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div>
+            <div class="small">Connected Asset</div>
+            <div style="font-weight:800;margin-top:6px" id="sideAsset">USDARE-OTC</div>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Win Rate</div>
+            <div class="meter" id="sideWin">93.74%</div>
+          </div>
+        </div>
+
+        <div style="height:10px;margin:12px 0;background:rgba(255,255,255,0.04);border-radius:8px;overflow:hidden">
+          <div id="winBar" style="height:100%;width:93.74%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:8px"></div>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="small">Auto Scan Status</div>
+          <div style="margin-top:8px;font-weight:700" id="autoStatus">Enabled • 1m</div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;gap:10px">
+          <button class="btn scan" style="flex:1">Set Asset</button>
+          <button class="btn auto" style="flex:1">Settings</button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer">Last update: <span id="lastUpdate">—</span> • Scanning market data… ⏳</div>
+  </div>
+
+  <script>
+    // Simple UI demo logic — replace with your real signal source (WebSocket / API)
+    function pad(n){return n.toString().padStart(2,'0')}
+    function nowStr(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())}
+    function updateClock(){document.getElementById('timeLarge').textContent = nowStr(); document.getElementById('lastUpdate').textContent = new Date().toLocaleString();}
+    setInterval(updateClock,1000); updateClock();
+
+    // Demo: simulate incoming signals every 12s
+    const demoPairs = ['USDDZD-OTC','EUR/USD','GBP/JPY','AUD/CAD'];
+    function randomBetween(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+    function showSignal(){
+      const pair = demoPairs[randomBetween(0,demoPairs.length-1)];
+      const isCall = Math.random()>.4;
+      document.getElementById('pair').textContent = pair;
+      document.getElementById('sideAsset').textContent = pair;
+      document.getElementById('asset').textContent = pair;
+      document.getElementById('direction').textContent = isCall? 'CALL' : 'PUT';
+      document.getElementById('direction').className = 'pill ' + (isCall? 'call':'put');
+      document.getElementById('scanTime').textContent = new Date().toLocaleTimeString();
+      document.getElementById('tradeTime').textContent = new Date(Date.now()+3*60*1000).toLocaleTimeString();
+      document.getElementById('expiry').textContent = '1 MIN';
+      // win rate demo animation
+      const win = (90 + Math.random()*8).toFixed(2);
+      document.getElementById('win').textContent = win + '%';
+      document.getElementById('sideWin').textContent = win + '%';
+      document.getElementById('winBar').style.width = win + '%';
+      document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
+      // small glow pulse
+      const card = document.getElementById('signalCard');
+      card.classList.remove('pulse'); void card.offsetWidth; card.classList.add('pulse');
+    }
+    setInterval(showSignal,12000);
+    showSignal();
+
+    // Buttons (demo)
+    document.getElementById('scanBtn').addEventListener('click', showSignal);
+    document.getElementById('clearBtn').addEventListener('click', ()=>{
+      document.getElementById('pair').textContent='—'; document.getElementById('direction').textContent='—';
+    });
+  </script>
+</body>
+</html>
