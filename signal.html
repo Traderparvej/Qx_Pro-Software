@@ -151,7 +151,13 @@
   </div>
 
   <script>
-    const demoPairs = ['USDDZD-OTC','EUR/USD','GBP/JPY','AUD/CAD'];
+    const demoPairs = [
+      'EUR/GBP','EUR/NZD','USD/ARS','USD/NGN','USD/BDT','EUR/CHF','USD/INR','EUR/CAD','NZD/CAD','USD/TRY',
+      'EUR/JPY','USD/COP','USD/ZAR','AUD/CAD','AUD/CHF','CAD/CHF','USD/JPY','NZD/CHF','USD/MXN','AUD/JPY',
+      'GBP/CHF','USD/IDR','NZD/JPY','USD/BRL','EUR/AUD','USD/PKR','USD/DZD','AUD/USD','CHF/JPY','EUR/USD',
+      'GBP/AUD','GBP/JPY','USD/CAD','USD/CHF','USD/EGP','USD/PHP','NZD/USD','CAD/JPY','GBP/USD','GBP/CAD',
+      'EUR/SGD','GBP/NZD','AUD/NZD'
+    ];
 
     function pad(n){return n.toString().padStart(2,'0')}
     function nowStr(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())}
@@ -161,9 +167,14 @@
     let signalIndex = 0;
 
     function generateSignal(){
-      const pair = demoPairs[Math.floor(Math.random()*demoPairs.length)];
+      let pair = demoPairs[Math.floor(Math.random()*demoPairs.length)];
+      pair += '-OTC'; // add OTC suffix
       const isCall = Math.random() > 0.5;
-      const signalTime = new Date(Date.now() + (Math.floor(Math.random()*3+1)*60*1000));
+
+      // Random trade time 2-4 min from now
+      const tradeOffset = (Math.floor(Math.random()*3)+2)*60*1000;
+      const tradeTime = new Date(Date.now() + tradeOffset);
+
       const winRate = (90 + Math.random()*8).toFixed(2);
 
       const card = document.createElement('div');
@@ -182,8 +193,8 @@
         </div>
         <div class="signal-meta">
           <div class="meta"><small>Scan Time</small><strong>${new Date().toLocaleTimeString()}</strong></div>
-          <div class="meta"><small>Expiry</small><strong>1-3 MIN</strong></div>
-          <div class="meta"><small>Trade Time</small><strong>${signalTime.toLocaleTimeString()}</strong></div>
+          <div class="meta"><small>Expiry</small><strong>1 MIN</strong></div>
+          <div class="meta"><small>Trade Time</small><strong>${pad(tradeTime.getHours())}:${pad(tradeTime.getMinutes())}</strong></div>
         </div>
       `;
       const container = document.getElementById('signalContainer');
@@ -218,7 +229,7 @@
         document.getElementById('scanMode').textContent = 'Auto';
         document.getElementById('autoBtn').textContent = '⏸ Stop Auto';
         generateSignal(); // first signal immediately
-        autoScanInterval = setInterval(generateSignal, (Math.floor(Math.random()*2+2)*60*1000)); // 2-3 min random
+        autoScanInterval = setInterval(generateSignal, (Math.floor(Math.random()*3+2)*60*1000)); // 2-4 min random
       }
     });
   </script>
