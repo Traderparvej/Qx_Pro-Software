@@ -23,6 +23,7 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
+
     .wrap{
       display:flex;
       flex-direction:column;
@@ -31,6 +32,7 @@
       max-width:980px;
       justify-content:space-between;
     }
+
     header{
       display:flex;
       justify-content:space-between;
@@ -41,24 +43,44 @@
     .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042029;box-shadow:var(--neon);font-size:18px}
     .brand h1{font-size:18px;letter-spacing:0.4px}
     .brand p{font-size:11px;color:var(--muted)}
-    .top-stats{display:flex;flex:1;gap:12px;margin-top:12px;height:60%}
-    .panel{flex:2;display:flex;flex-direction:column;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:12px;box-shadow:0 6px 30px rgba(2,6,23,0.6);overflow:hidden}
-    .right-card{flex:1;display:flex;flex-direction:column;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:12px;box-shadow:0 6px 20px rgba(2,6,23,0.5);}
+
+    .content{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      height:calc(100% - 60px);
+    }
+
+    /* Zig-zag placement: even index right, odd index left */
+    .panel, .right-card{
+      border-radius:var(--radius);
+      padding:12px;
+      box-shadow:0 6px 30px rgba(2,6,23,0.6);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    }
+
     .status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;flex:1}
     .stat{background:var(--glass);padding:6px;border-radius:10px;display:flex;flex-direction:column;justify-content:center}
     .stat small{font-size:10px;color:var(--muted)}
     .stat strong{font-size:14px;margin-top:2px}
+
     .controls{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
     .btn{flex:1;padding:8px 10px;border-radius:10px;text-align:center;font-weight:600;cursor:pointer;border:none;font-size:12px}
     .btn.scan{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#072227;box-shadow:var(--neon)}
     .btn.auto{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
     .btn.clear{background:transparent;border:1px solid rgba(255,0,80,0.06);color:var(--muted)}
+
     .signal-card{margin-top:8px;padding:10px;border-radius:12px;background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));border:1px solid rgba(0,224,163,0.08);box-shadow:0 10px 25px rgba(2,6,23,0.5);flex:1;display:flex;flex-direction:column;justify-content:space-between}
     .signal-row{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
     .pair{font-size:14px;font-weight:700}
     .pill{padding:4px 8px;border-radius:999px;font-weight:700;font-size:12px}
     .call{background:linear-gradient(90deg,rgba(0,224,163,0.12),rgba(0,224,163,0.08));color:var(--accent);border:1px solid rgba(0,224,163,0.2)}
     .put{background:linear-gradient(90deg,rgba(255,77,103,0.06),rgba(255,77,103,0.03));color:#ff607e;border:1px solid rgba(255,77,103,0.12)}
+
     .signal-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;font-size:10px}
     .meta{background:rgba(255,255,255,0.02);padding:4px;border-radius:8px;text-align:center}
     .meta small{display:block;color:var(--muted)}
@@ -66,11 +88,20 @@
     .footer{margin-top:6px;color:var(--muted);font-size:10px;text-align:center}
     .pulse{animation:pulse 2s infinite}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+    @media(max-width:880px){
+      .content{
+        display:flex;
+        flex-direction:column;
+        height:auto;
+      }
+      .panel, .right-card{width:100%;height:auto;margin-bottom:6px}
+    }
+
     @media(max-width:480px){
-      .top-stats{flex-direction:column;height:auto}
-      .panel,.right-card{height:auto}
-      .status-grid{grid-template-columns:1fr;gap:4px}
-      .controls{flex-direction:column;gap:4px}
+      .logo{width:40px;height:40px;font-size:16px}
+      .brand h1{font-size:16px}
+      .brand p{font-size:10px}
       .btn{font-size:11px;padding:6px}
       .pair{font-size:12px}
       .pill{font-size:10px;padding:3px 6px}
@@ -97,7 +128,7 @@
       </div>
     </header>
 
-    <div class="top-stats">
+    <div class="content">
       <div class="panel">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:10px">
           <div>
@@ -139,7 +170,7 @@
         </div>
       </div>
 
-      <aside class="right-card">
+      <div class="right-card">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
           <div><div class="small">Connected Asset</div><div style="font-weight:700" id="sideAsset">USDARE-OTC</div></div>
           <div style="text-align:right"><div class="small">Win Rate</div><div class="meter" id="sideWin">93.74%</div></div>
@@ -152,7 +183,7 @@
           <button class="btn scan" style="flex:1">Set Asset</button>
           <button class="btn auto" style="flex:1">Settings</button>
         </div>
-      </aside>
+      </div>
     </div>
 
     <div class="footer">Last update: <span id="lastUpdate">—</span> • Scanning market data… ⏳</div>
