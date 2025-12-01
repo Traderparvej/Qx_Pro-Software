@@ -6,7 +6,7 @@
   <title>Qx_Pro — Signal Dashboard</title>
   <style>
     :root{
-      --bg1:#0b1220; --bg2:#0f1b2b; --card:#0f2636; --accent:#00e0a3; --accent-2:#24b3ff; --muted:rgba(255,255,255,0.65);
+      --bg1:#0b1220; --bg2:#0f1b2b; --accent:#00e0a3; --accent-2:#24b3ff; --muted:rgba(255,255,255,0.65);
       --glass: rgba(255,255,255,0.03);
       --neon: 0 8px 30px rgba(0,224,163,0.12);
       --radius:16px;
@@ -19,7 +19,7 @@
       color:#eaf6f2;
       display:flex;
       justify-content:center;
-      align-items:center;
+      align-items:flex-start;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       padding:10px;
@@ -31,7 +31,7 @@
       width:100%;
       max-width:480px;
       justify-content:flex-start;
-      gap:12px;
+      gap:16px;
     }
 
     header{
@@ -68,7 +68,7 @@
     .btn.auto{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
     .btn.clear{background:transparent;border:1px solid rgba(255,0,80,0.06);color:var(--muted)}
 
-    .signal-card{padding:12px;border-radius:16px;background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));border:1px solid rgba(0,224,163,0.08);box-shadow:0 10px 25px rgba(2,6,23,0.5);display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+    .signal-card{padding:12px;border-radius:16px;background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));border:1px solid rgba(0,224,163,0.08);box-shadow:0 10px 25px rgba(2,6,23,0.5);display:flex;flex-direction:column;justify-content:space-between;gap:8px;transition: all 0.4s ease;}
     .signal-row{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
     .pair{font-size:16px;font-weight:700}
     .pill{padding:5px 10px;border-radius:999px;font-weight:700;font-size:12px}
@@ -105,7 +105,7 @@
         <div class="logo">Qx</div>
         <div>
           <h1>Qx_Pro Live Signals</h1>
-          <p>Premium signal dashboard • sleek, low-latency UI</p>
+          <p>Real-time trading signals • professional accuracy</p>
         </div>
       </div>
       <div style="text-align:right">
@@ -125,15 +125,15 @@
         </div>
         <div style="text-align:right">
           <div style="color:var(--muted)">Next Signal</div>
-          <div id="nextSignal" style="font-weight:700;font-size:12px">00:55</div>
+          <div id="nextSignal" style="font-weight:700;font-size:12px">--:--</div>
         </div>
       </div>
 
       <div class="status-grid" style="margin-top:6px">
-        <div class="stat"><small>Connected Asset</small><strong id="asset">USDARE-OTC</strong></div>
-        <div class="stat"><small>Win Rate</small><strong id="win">93.74%</strong></div>
-        <div class="stat"><small>Scan Mode</small><strong id="scanMode">Auto (1m)</strong></div>
-        <div class="stat"><small>Confidence</small><strong id="confidence">High</strong></div>
+        <div class="stat"><small>Connected Asset</small><strong id="asset">—</strong></div>
+        <div class="stat"><small>Win Rate</small><strong id="win">—</strong></div>
+        <div class="stat"><small>Scan Mode</small><strong id="scanMode">Manual</strong></div>
+        <div class="stat"><small>Confidence</small><strong id="confidence">—</strong></div>
       </div>
 
       <div class="controls">
@@ -142,24 +142,7 @@
         <button class="btn clear" id="clearBtn">🗑 Clear</button>
       </div>
 
-      <div class="signal-card pulse" id="signalCard">
-        <div class="signal-row">
-          <div>
-            <div class="pair" id="pair">USDDZD-OTC</div>
-            <div style="color:var(--muted);font-size:10px;margin-top:2px">Bullish Signal 🔺</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-            <div class="pill call" id="direction">CALL</div>
-            <div style="color:var(--muted);font-size:10px">High</div>
-          </div>
-        </div>
-
-        <div class="signal-meta">
-          <div class="meta"><small>Scan Time</small><strong id="scanTime">08:32 PM</strong></div>
-          <div class="meta"><small>Expiry</small><strong id="expiry">1 MIN</strong></div>
-          <div class="meta"><small>Trade Time</small><strong id="tradeTime">08:35 PM</strong></div>
-        </div>
-      </div>
+      <div id="signalContainer"></div>
 
     </div>
 
@@ -168,35 +151,75 @@
   </div>
 
   <script>
+    const demoPairs = ['USDDZD-OTC','EUR/USD','GBP/JPY','AUD/CAD'];
+
     function pad(n){return n.toString().padStart(2,'0')}
     function nowStr(){const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())}
     function updateClock(){document.getElementById('timeLarge').textContent = nowStr(); document.getElementById('lastUpdate').textContent = new Date().toLocaleString();}
     setInterval(updateClock,1000); updateClock();
 
-    const demoPairs = ['USDDZD-OTC','EUR/USD','GBP/JPY','AUD/CAD'];
-    function randomBetween(a,b){return Math.floor(Math.random()*(b-a+1))+a}
-    function showSignal(){
-      const pair = demoPairs[randomBetween(0,demoPairs.length-1)];
-      const isCall = Math.random()>.4;
-      document.getElementById('pair').textContent = pair;
+    let signalIndex = 0;
+
+    function generateSignal(){
+      const pair = demoPairs[Math.floor(Math.random()*demoPairs.length)];
+      const isCall = Math.random() > 0.5;
+      const signalTime = new Date(Date.now() + (Math.floor(Math.random()*3+1)*60*1000));
+      const winRate = (90 + Math.random()*8).toFixed(2);
+
+      const card = document.createElement('div');
+      card.className = 'signal-card pulse';
+      card.style.flexDirection = signalIndex % 2 === 0 ? 'row' : 'row-reverse';
+      card.innerHTML = `
+        <div class="signal-row">
+          <div>
+            <div class="pair">${pair}</div>
+            <div style="color:var(--muted);font-size:10px">${isCall ? 'Bullish Signal 🔺' : 'Bearish Signal 🔻'}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+            <div class="pill ${isCall ? 'call':'put'}">${isCall ? 'CALL':'PUT'}</div>
+            <div style="color:var(--muted);font-size:10px">High</div>
+          </div>
+        </div>
+        <div class="signal-meta">
+          <div class="meta"><small>Scan Time</small><strong>${new Date().toLocaleTimeString()}</strong></div>
+          <div class="meta"><small>Expiry</small><strong>1-3 MIN</strong></div>
+          <div class="meta"><small>Trade Time</small><strong>${signalTime.toLocaleTimeString()}</strong></div>
+        </div>
+      `;
+      const container = document.getElementById('signalContainer');
+      container.prepend(card);
+
       document.getElementById('asset').textContent = pair;
-      document.getElementById('direction').textContent = isCall? 'CALL' : 'PUT';
-      document.getElementById('direction').className = 'pill ' + (isCall? 'call':'put');
-      document.getElementById('scanTime').textContent = new Date().toLocaleTimeString();
-      document.getElementById('tradeTime').textContent = new Date(Date.now()+3*60*1000).toLocaleTimeString();
-      document.getElementById('expiry').textContent = '1 MIN';
-      const win = (90 + Math.random()*8).toFixed(2);
-      document.getElementById('win').textContent = win + '%';
-      document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
-      const card = document.getElementById('signalCard');
-      card.classList.remove('pulse'); void card.offsetWidth; card.classList.add('pulse');
+      document.getElementById('win').textContent = winRate + '%';
+      document.getElementById('confidence').textContent = isCall ? 'High' : 'Moderate';
+      signalIndex++;
     }
-    setInterval(showSignal,12000);
-    showSignal();
-    document.getElementById('scanBtn').addEventListener('click', showSignal);
+
+    // Scan Market Data button
+    document.getElementById('scanBtn').addEventListener('click', generateSignal);
+
+    // Clear Signals
     document.getElementById('clearBtn').addEventListener('click', ()=>{
-      document.getElementById('pair').textContent='—'; 
-      document.getElementById('direction').textContent='—';
+      document.getElementById('signalContainer').innerHTML = '';
+      document.getElementById('asset').textContent = '—';
+      document.getElementById('win').textContent = '—';
+      document.getElementById('confidence').textContent = '—';
+    });
+
+    // Auto Scan
+    let autoScanInterval = null;
+    document.getElementById('autoBtn').addEventListener('click', ()=>{
+      if(autoScanInterval){
+        clearInterval(autoScanInterval);
+        autoScanInterval = null;
+        document.getElementById('scanMode').textContent = 'Manual';
+        document.getElementById('autoBtn').textContent = '▶ Auto Scan';
+      }else{
+        document.getElementById('scanMode').textContent = 'Auto';
+        document.getElementById('autoBtn').textContent = '⏸ Stop Auto';
+        generateSignal(); // first signal immediately
+        autoScanInterval = setInterval(generateSignal, (Math.floor(Math.random()*2+2)*60*1000)); // 2-3 min random
+      }
     });
   </script>
 
