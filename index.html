@@ -23,7 +23,6 @@
       padding:20px;
     }
 
-    /* Desktop layout */
     .container{
       width:950px;max-width:100%;
       display:grid;grid-template-columns:420px 1fr;
@@ -31,7 +30,6 @@
       align-items:flex-start;
     }
 
-    /* Cards */
     .left,.right{
       background:rgba(255,255,255,0.03);
       padding:28px;border-radius:16px;
@@ -48,7 +46,6 @@
     h1{font-size:22px}
     .lead{font-size:13px;color:var(--muted)}
 
-    /* Form */
     form{display:flex;flex-direction:column;gap:15px;margin-top:10px}
     label{font-size:12px;color:var(--muted)}
     input{
@@ -68,7 +65,6 @@
 
     .error{color:#ff6b6b;font-size:13px;display:none;margin-top:-5px}
 
-    /* Right card items */
     .card-title{font-size:19px;margin-bottom:6px;font-weight:600}
     .muted{color:var(--muted);font-size:13px}
 
@@ -82,59 +78,23 @@
       font-size:14px;
     }
 
-    /* ------------------------------------------------- */
-    /*                MOBILE LONG THEME                 */
-    /* ------------------------------------------------- */
     @media(max-width:650px){
-      body{
-        padding:0;
-        display:block;
-      }
+      body{padding:0;display:block;}
+      .container{grid-template-columns:1fr;gap:0;width:100%;}
 
-      .container{
-        grid-template-columns:1fr;
-        gap:0;
-        width:100%;
-      }
-
-      /* LEFT CARD - Full screen section */
       .left{
-        border-radius:0;
-        padding:40px 28px;
-        min-height:60vh;
-        display:flex;
-        flex-direction:column;
-        justify-content:flex-start;
+        border-radius:0;padding:40px 28px;min-height:60vh;
+        display:flex;flex-direction:column;justify-content:flex-start;
       }
-
-      .logo{
-        width:56px;height:56px;
-        font-size:20px;
-        margin-top:10px;
-      }
-
+      .logo{width:56px;height:56px;font-size:20px;margin-top:10px;}
       h1{font-size:21px}
       .lead{font-size:12px}
-
       input{padding:14px;font-size:15px}
       .btn{padding:15px;font-size:17px}
 
-      /* RIGHT CARD goes to bottom full width */
-      .right{
-        border-radius:24px 24px 0 0;
-        padding:28px 22px;
-        margin-top:10px;
-      }
-
-      .features{
-        grid-template-columns:1fr; /* mobile long vertical list */
-        gap:14px;
-      }
-
-      .feature{
-        padding:14px;
-        font-size:15px;
-      }
+      .right{border-radius:24px 24px 0 0;padding:28px 22px;margin-top:10px;}
+      .features{grid-template-columns:1fr;gap:14px;}
+      .feature{padding:14px;font-size:15px;}
     }
 
     @media(max-width:430px){
@@ -204,13 +164,14 @@
     let email = document.getElementById('email').value.trim();
     let pwd = document.getElementById('password').value;
 
-    if(email !== "QxPro" || pwd !== "@QxPro"){
-      errorEl.style.display="block";
-      errorEl.textContent="Invalid username or password.";
+    if(email !== "Qxpro@Ai.com" || pwd !== "@QxPro"){
+      errorEl.style.display = "block";
+      errorEl.textContent = "Invalid email or password.";
       return;
     }
+
     localStorage.setItem("qx_auth","ok");
-    window.location.href="dashboard.html";
+    window.location.href = "signal.html";
   });
 </script>
 
