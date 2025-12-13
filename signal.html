@@ -85,6 +85,83 @@
     .pulse{animation:pulse 2s infinite}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
 
+    /* Tutorial Popup */
+    .tutorial-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(5,10,20,0.75);
+      backdrop-filter: blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+    }
+
+    .tutorial-popup{
+      width:92%;
+      max-width:420px;
+      background:linear-gradient(180deg,#0b1220,#0f1b2b);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 20px 60px rgba(0,0,0,0.6);
+      border:1px solid rgba(0,224,163,0.15);
+    }
+
+    .tutorial-popup h3{
+      font-size:15px;
+      margin-bottom:6px;
+      color:#00e0a3;
+    }
+
+    .tutorial-popup p{
+      font-size:11px;
+      color:rgba(255,255,255,0.65);
+      margin-bottom:10px;
+    }
+
+    .video-wrap{
+      position:relative;
+      padding-top:56.25%;
+      border-radius:12px;
+      overflow:hidden;
+    }
+
+    .video-wrap iframe{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      border:0;
+    }
+
+    .popup-close{
+      margin-top:10px;
+      width:100%;
+      padding:8px;
+      border-radius:10px;
+      border:none;
+      background:linear-gradient(90deg,#00e0a3,#24b3ff);
+      font-weight:700;
+      cursor:pointer;
+      color:#042029;
+    }
+
+    /* Floating Button */
+    .tutorial-fab{
+      position:fixed;
+      bottom:16px;
+      right:16px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#00e0a3,#24b3ff);
+      color:#042029;
+      font-weight:700;
+      font-size:12px;
+      box-shadow:0 10px 30px rgba(0,224,163,0.35);
+      cursor:pointer;
+      z-index:9998;
+    }
+
     @media(max-width:400px){
       .logo{width:40px;height:40px;font-size:16px}
       .brand h1{font-size:16px}
@@ -156,7 +233,28 @@
 
   </div>
 
+  <!-- Tutorial Popup -->
+  <div class="tutorial-overlay" id="tutorialPopup">
+    <div class="tutorial-popup">
+      <h3>How to Use Qx_Pro</h3>
+      <p>Watch this 1 minute video before using live signals</p>
+      <div class="video-wrap">
+        <iframe 
+          src="https://www.youtube.com/embed/X-8rgHJmwjE?rel=0"
+          allowfullscreen>
+        </iframe>
+      </div>
+      <button class="popup-close" onclick="closeTutorial()">Got it 👍</button>
+    </div>
+  </div>
+
+  <!-- Floating Button -->
+  <div class="tutorial-fab" onclick="openTutorial()">
+    🎥 How to Use
+  </div>
+
   <script>
+    // ---------------- Clock ----------------
     const demoPairs = [
       'EUR/GBP','EUR/NZD','USD/ARS','USD/NGN','USD/BDT','EUR/CHF','USD/INR','EUR/CAD','NZD/CAD','USD/TRY',
       'EUR/JPY','USD/COP','USD/ZAR','AUD/CAD','AUD/CHF','CAD/CHF','USD/JPY','NZD/CHF','USD/MXN','AUD/JPY',
@@ -174,13 +272,10 @@
 
     function generateSignal(){
       let pair = demoPairs[Math.floor(Math.random()*demoPairs.length)];
-      pair += '-OTC'; // add OTC suffix
+      pair += '-OTC';
       const isCall = Math.random() > 0.5;
-
-      // Random trade time 2-4 min from now
       const tradeOffset = (Math.floor(Math.random()*3)+2)*60*1000;
       const tradeTime = new Date(Date.now() + tradeOffset);
-
       const winRate = (90 + Math.random()*8).toFixed(2);
 
       const card = document.createElement('div');
@@ -234,8 +329,22 @@
       }else{
         document.getElementById('scanMode').textContent = 'Auto';
         document.getElementById('autoBtn').textContent = '⏸ Stop Auto';
-        generateSignal(); // first signal immediately
-        autoScanInterval = setInterval(generateSignal, (Math.floor(Math.random()*3+2)*60*1000)); // 2-4 min random
+        generateSignal();
+        autoScanInterval = setInterval(generateSignal, (Math.floor(Math.random()*3+2)*60*1000));
+      }
+    });
+
+    // ---------------- Tutorial Popup ----------------
+    const popup = document.getElementById('tutorialPopup');
+    function openTutorial(){ popup.style.display = 'flex'; }
+    function closeTutorial(){ 
+      popup.style.display = 'none';
+      localStorage.setItem('qx_tutorial_seen','yes');
+    }
+
+    window.addEventListener('load',()=>{
+      if(!localStorage.getItem('qx_tutorial_seen')){
+        setTimeout(()=>{ popup.style.display = 'flex'; }, 6000);
       }
     });
   </script>
