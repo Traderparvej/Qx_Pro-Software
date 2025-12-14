@@ -13,7 +13,7 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
     *{box-sizing:border-box;margin:0;padding:0}
-    html, body{height:100%;width:100%;overflow:hidden;margin:0;padding:0;}
+    html, body{height:100%;width:100%;overflow:hidden}
     body{
       background: linear-gradient(180deg,var(--bg1),var(--bg2));
       color:#eaf6f2;
@@ -22,92 +22,45 @@
       align-items:flex-start;
       padding:10px;
     }
-
-    .wrap{
-      display:flex;
-      flex-direction:column;
-      width:100%;
-      max-width:480px;
-      gap:16px;
-    }
-
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042029;box-shadow:var(--neon);font-size:18px}
+    .wrap{width:100%;max-width:480px;display:flex;flex-direction:column;gap:16px}
+    header{display:flex;justify-content:space-between;align-items:center}
+    .brand{display:flex;gap:12px}
+    .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042029}
     .brand h1{font-size:18px}
     .brand p{font-size:11px;color:var(--muted)}
-
-    .panel{
-      border-radius:var(--radius);
-      padding:16px;
-      box-shadow:0 6px 30px rgba(2,6,23,0.6);
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    }
-
-    .status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
-    .stat{background:var(--glass);padding:8px;border-radius:10px}
-    .stat small{font-size:10px;color:var(--muted)}
-    .stat strong{font-size:14px}
-
-    .controls{display:flex;gap:6px;flex-wrap:wrap}
-    .btn{flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;border:none;cursor:pointer}
-    .btn.scan{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042029}
-    .btn.auto,.btn.clear{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-
-    .signal-card{padding:12px;border-radius:16px;background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));border:1px solid rgba(0,224,163,0.08);box-shadow:0 10px 25px rgba(2,6,23,0.5)}
-
+    .panel{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border-radius:16px;padding:16px;box-shadow:0 6px 30px rgba(2,6,23,.6)}
+    .controls{display:flex;gap:6px;margin-top:8px}
+    .btn{flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer}
+    .scan{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+    .auto,.clear{background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--muted)}
+    .signal-card{margin-top:10px;padding:12px;border-radius:14px;border:1px solid rgba(0,224,163,.1)}
+    .pair{font-size:16px;font-weight:700}
+    .pill{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
+    .call{color:#00e0a3;border:1px solid rgba(0,224,163,.2)}
+    .put{color:#ff607e;border:1px solid rgba(255,77,103,.2)}
     .footer{text-align:center;font-size:10px;color:var(--muted)}
 
-    /* Tutorial Popup */
-    .tutorial-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(5,10,20,0.75);
-      backdrop-filter: blur(6px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
-    }
-    .tutorial-popup{
-      width:92%;
-      max-width:420px;
-      background:linear-gradient(180deg,#0b1220,#0f1b2b);
-      border-radius:18px;
-      padding:14px;
-      border:1px solid rgba(0,224,163,0.15);
-    }
-    .tutorial-popup h3{color:#00e0a3;font-size:15px}
-    .tutorial-popup p{font-size:11px;color:var(--muted)}
-    .video-wrap{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden}
+    /* Tutorial */
+    .tutorial-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:999}
+    .tutorial-popup{background:#0b1220;border-radius:16px;padding:14px;width:92%;max-width:420px}
+    .tutorial-popup h3{color:#00e0a3;margin-bottom:6px}
+    .video-wrap{position:relative;padding-top:56.25%}
     .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%}
     .popup-close{margin-top:10px;width:100%;padding:8px;border-radius:10px;border:none;background:linear-gradient(90deg,#00e0a3,#24b3ff);font-weight:700}
-
-    /* Inline How to Use button */
-    .tutorial-inline{
-      margin-top:12px;
-      padding:8px 14px;
-      border-radius:999px;
+    .how-btn{
+      margin-top:14px;
+      padding:10px;
+      border-radius:12px;
       background:linear-gradient(90deg,#00e0a3,#24b3ff);
-      color:#042029;
+      text-align:center;
       font-weight:700;
-      font-size:12px;
-      box-shadow:0 10px 30px rgba(0,224,163,0.3);
       cursor:pointer;
-      display:inline-block;
+      color:#042029;
     }
   </style>
 </head>
-<body>
 
+<body>
 <div class="wrap">
 
 <header>
@@ -115,52 +68,69 @@
     <div class="logo">Qx</div>
     <div>
       <h1>Qx_Pro Live Signals</h1>
-      <p>Real-time trading signals • professional accuracy</p>
+      <p>Real-time trading signals</p>
     </div>
   </div>
 </header>
 
 <div class="panel">
+  <div class="controls">
+    <button class="btn scan" onclick="generateSignal()">🔍 Scan</button>
+    <button class="btn auto" onclick="autoScan()">▶ Auto</button>
+    <button class="btn clear" onclick="clearSignals()">🗑 Clear</button>
+  </div>
 
   <div id="signalContainer"></div>
 
-  <!-- HOW TO USE BUTTON (MOVED HERE) -->
-  <div style="text-align:center">
-    <div class="tutorial-inline" onclick="openTutorial()">🎥 How to Use</div>
-  </div>
+  <!-- HOW TO USE BUTTON (NEW POSITION) -->
+  <div class="how-btn" onclick="openTutorial()">🎥 How to Use</div>
 
-  <!-- TELEGRAM CHANNEL PROMO -->
-  <div style="margin-top:12px;padding:12px;border-radius:16px;background:linear-gradient(135deg, rgba(36,179,255,0.05), rgba(0,224,163,0.03));text-align:center;">
-    <div style="font-size:14px;font-weight:700;color:#00e0a3">Join Our Telegram Channel</div>
+  <!-- TELEGRAM -->
+  <div style="margin-top:12px;text-align:center;padding:12px;border-radius:14px;border:1px solid rgba(0,224,163,.1)">
+    <div style="font-weight:700;color:#00e0a3">Join Our Telegram</div>
     <a href="https://t.me/TraderParvej_Community" target="_blank"
-       style="display:inline-block;margin-top:6px;padding:6px 12px;border-radius:8px;background:linear-gradient(90deg,#00e0a3,#24b3ff);color:#042029;font-weight:700;text-decoration:none;">
+       style="display:inline-block;margin-top:6px;padding:6px 12px;border-radius:8px;
+       background:linear-gradient(90deg,#00e0a3,#24b3ff);font-weight:700;color:#042029;text-decoration:none">
       @TraderParvej_Community
     </a>
   </div>
-
 </div>
 
-<div class="footer">Scanning market data… ⏳</div>
-
+<div class="footer">Qx_Pro • Live Market Scan</div>
 </div>
 
 <!-- Tutorial Popup -->
-<div class="tutorial-overlay" id="tutorialPopup">
+<div class="tutorial-overlay" id="tutorial">
   <div class="tutorial-popup">
     <h3>How to Use Qx_Pro</h3>
-    <p>Watch this 1 minute video before using live signals</p>
     <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/X-8rgHJmwjE?rel=0" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/X-8rgHJmwjE" allowfullscreen></iframe>
     </div>
     <button class="popup-close" onclick="closeTutorial()">Got it 👍</button>
   </div>
 </div>
 
 <script>
-  const popup=document.getElementById('tutorialPopup');
-  function openTutorial(){popup.style.display='flex'}
-  function closeTutorial(){popup.style.display='none';localStorage.setItem('qx_tutorial_seen','yes')}
-  window.onload=()=>{if(!localStorage.getItem('qx_tutorial_seen'))setTimeout(()=>popup.style.display='flex',6000)}
+const pairs=[
+'EUR/GBP','EUR/NZD','USD/ARS','USD/NGN','USD/BDT','EUR/CHF','USD/INR','EUR/CAD','NZD/CAD','USD/TRY',
+'EUR/JPY','USD/ZAR','AUD/CAD','AUD/CHF','CAD/CHF','USD/JPY','USD/MXN','AUD/JPY','GBP/CHF','NZD/JPY',
+'AUD/USD','EUR/USD','GBP/JPY','NZD/USD','GBP/USD','GBP/CAD'
+];
+
+function generateSignal(){
+  const pair=pairs[Math.floor(Math.random()*pairs.length)]+'-OTC';
+  const call=Math.random()>0.5;
+  const div=document.createElement('div');
+  div.className='signal-card';
+  div.innerHTML=`
+    <div class="pair">${pair}</div>
+    <div class="pill ${call?'call':'put'}">${call?'CALL':'PUT'}</div>
+  `;
+  document.getElementById('signalContainer').prepend(div);
+}
+function clearSignals(){document.getElementById('signalContainer').innerHTML=''}
+function openTutorial(){document.getElementById('tutorial').style.display='flex'}
+function closeTutorial(){document.getElementById('tutorial').style.display='none'}
 </script>
 
 </body>
