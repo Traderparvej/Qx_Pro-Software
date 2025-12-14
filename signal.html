@@ -13,7 +13,7 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
     *{box-sizing:border-box;margin:0;padding:0}
-    html, body{height:100%;width:100%;overflow:hidden;}
+    html, body{height:100%;width:100%;overflow:hidden;margin:0;padding:0;}
     body{
       background: linear-gradient(180deg,var(--bg1),var(--bg2));
       color:#eaf6f2;
@@ -24,10 +24,10 @@
     }
 
     .wrap{
-      width:100%;
-      max-width:480px;
       display:flex;
       flex-direction:column;
+      width:100%;
+      max-width:480px;
       gap:16px;
     }
 
@@ -35,105 +35,43 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
+      flex-wrap:wrap;
     }
     .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:48px;height:48px;border-radius:12px;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      display:flex;align-items:center;justify-content:center;
-      font-weight:800;color:#042029;box-shadow:var(--neon)
-    }
+    .logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042029;box-shadow:var(--neon);font-size:18px}
     .brand h1{font-size:18px}
     .brand p{font-size:11px;color:var(--muted)}
 
     .panel{
       border-radius:var(--radius);
       padding:16px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       box-shadow:0 6px 30px rgba(2,6,23,0.6);
       display:flex;
       flex-direction:column;
       gap:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     }
 
-    .status-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:6px;
-    }
-    .stat{
-      background:var(--glass);
-      padding:8px;
-      border-radius:10px;
-    }
+    .status-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+    .stat{background:var(--glass);padding:8px;border-radius:10px}
     .stat small{font-size:10px;color:var(--muted)}
     .stat strong{font-size:14px}
 
-    .controls{display:flex;gap:6px}
-    .btn{
-      flex:1;
-      padding:8px;
-      border-radius:10px;
-      font-size:12px;
-      font-weight:700;
-      cursor:pointer;
-      border:none;
-    }
+    .controls{display:flex;gap:6px;flex-wrap:wrap}
+    .btn{flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;border:none;cursor:pointer}
     .btn.scan{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#042029}
-    .btn.auto,.btn.clear{
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.06);
-      color:var(--muted);
-    }
+    .btn.auto,.btn.clear{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
 
-    .signal-card{
-      padding:12px;
-      border-radius:16px;
-      background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));
-      border:1px solid rgba(0,224,163,0.08);
-      box-shadow:0 10px 25px rgba(2,6,23,0.5);
-      animation:pulse 2s infinite;
-    }
-    .pair{font-size:16px;font-weight:800}
-    .pill{
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:800;
-    }
-    .call{color:#00e0a3;border:1px solid rgba(0,224,163,0.25)}
-    .put{color:#ff607e;border:1px solid rgba(255,77,103,0.2)}
-
-    .signal-meta{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:6px;
-      font-size:10px;
-      margin-top:6px;
-    }
-    .meta{
-      background:rgba(255,255,255,0.03);
-      padding:6px;
-      border-radius:8px;
-      text-align:center;
-    }
-    .meta small{color:var(--muted)}
-    .meta strong{display:block;margin-top:2px}
+    .signal-card{padding:12px;border-radius:16px;background:linear-gradient(135deg, rgba(0,224,163,0.03), rgba(36,179,255,0.02));border:1px solid rgba(0,224,163,0.08);box-shadow:0 10px 25px rgba(2,6,23,0.5)}
 
     .footer{text-align:center;font-size:10px;color:var(--muted)}
 
-    @keyframes pulse{
-      0%{transform:scale(1)}
-      50%{transform:scale(1.02)}
-      100%{transform:scale(1)}
-    }
-
-    /* Tutorial */
+    /* Tutorial Popup */
     .tutorial-overlay{
       position:fixed;
       inset:0;
       background:rgba(5,10,20,0.75);
-      backdrop-filter:blur(6px);
+      backdrop-filter: blur(6px);
       display:none;
       align-items:center;
       justify-content:center;
@@ -151,20 +89,16 @@
     .tutorial-popup p{font-size:11px;color:var(--muted)}
     .video-wrap{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden}
     .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%}
-    .popup-close{
-      margin-top:10px;width:100%;padding:8px;border-radius:10px;
-      border:none;background:linear-gradient(90deg,#00e0a3,#24b3ff);
-      font-weight:800;color:#042029;cursor:pointer;
-    }
+    .popup-close{margin-top:10px;width:100%;padding:8px;border-radius:10px;border:none;background:linear-gradient(90deg,#00e0a3,#24b3ff);font-weight:700}
 
-    /* INLINE How to Use Button */
+    /* Inline How to Use button */
     .tutorial-inline{
-      margin-top:10px;
+      margin-top:12px;
       padding:8px 14px;
       border-radius:999px;
       background:linear-gradient(90deg,#00e0a3,#24b3ff);
       color:#042029;
-      font-weight:800;
+      font-weight:700;
       font-size:12px;
       box-shadow:0 10px 30px rgba(0,224,163,0.3);
       cursor:pointer;
@@ -181,38 +115,25 @@
     <div class="logo">Qx</div>
     <div>
       <h1>Qx_Pro Live Signals</h1>
-      <p>Professional trading accuracy</p>
+      <p>Real-time trading signals • professional accuracy</p>
     </div>
   </div>
 </header>
 
 <div class="panel">
 
-  <div class="status-grid">
-    <div class="stat"><small>Asset</small><strong id="asset">—</strong></div>
-    <div class="stat"><small>Win Rate</small><strong id="win">—</strong></div>
-    <div class="stat"><small>Mode</small><strong id="scanMode">Manual</strong></div>
-    <div class="stat"><small>Confidence</small><strong id="confidence">—</strong></div>
-  </div>
-
-  <div class="controls">
-    <button class="btn scan" id="scanBtn">Scan</button>
-    <button class="btn auto" id="autoBtn">Auto</button>
-    <button class="btn clear" id="clearBtn">Clear</button>
-  </div>
-
   <div id="signalContainer"></div>
 
-  <!-- HOW TO USE BUTTON -->
+  <!-- HOW TO USE BUTTON (MOVED HERE) -->
   <div style="text-align:center">
     <div class="tutorial-inline" onclick="openTutorial()">🎥 How to Use</div>
   </div>
 
-  <!-- TELEGRAM PROMO -->
+  <!-- TELEGRAM CHANNEL PROMO -->
   <div style="margin-top:12px;padding:12px;border-radius:16px;background:linear-gradient(135deg, rgba(36,179,255,0.05), rgba(0,224,163,0.03));text-align:center;">
-    <div style="font-size:14px;font-weight:800;color:#00e0a3">Join Our Telegram Channel</div>
+    <div style="font-size:14px;font-weight:700;color:#00e0a3">Join Our Telegram Channel</div>
     <a href="https://t.me/TraderParvej_Community" target="_blank"
-       style="display:inline-block;margin-top:6px;padding:6px 12px;border-radius:8px;background:linear-gradient(90deg,#00e0a3,#24b3ff);color:#042029;font-weight:800;text-decoration:none;">
+       style="display:inline-block;margin-top:6px;padding:6px 12px;border-radius:8px;background:linear-gradient(90deg,#00e0a3,#24b3ff);color:#042029;font-weight:700;text-decoration:none;">
       @TraderParvej_Community
     </a>
   </div>
@@ -227,7 +148,7 @@
 <div class="tutorial-overlay" id="tutorialPopup">
   <div class="tutorial-popup">
     <h3>How to Use Qx_Pro</h3>
-    <p>Watch this short video before trading</p>
+    <p>Watch this 1 minute video before using live signals</p>
     <div class="video-wrap">
       <iframe src="https://www.youtube.com/embed/X-8rgHJmwjE?rel=0" allowfullscreen></iframe>
     </div>
@@ -236,43 +157,10 @@
 </div>
 
 <script>
-  const pairs=['EUR/USD','GBP/USD','USD/JPY','AUD/USD','USD/BDT'];
-  let auto=null;
-
-  function gen(){
-    const p=pairs[Math.floor(Math.random()*pairs.length)]+'-OTC';
-    const call=Math.random()>0.5;
-    const win=(90+Math.random()*8).toFixed(2);
-
-    const d=document.createElement('div');
-    d.className='signal-card';
-    d.innerHTML=`
-      <div class="pair">${p}</div>
-      <div class="pill ${call?'call':'put'}">${call?'CALL':'PUT'}</div>
-      <div class="signal-meta">
-        <div class="meta"><small>Expiry</small><strong>1 MIN</strong></div>
-        <div class="meta"><small>Win</small><strong>${win}%</strong></div>
-        <div class="meta"><small>Trend</small><strong>${call?'Bull':'Bear'}</strong></div>
-      </div>`;
-    document.getElementById('signalContainer').prepend(d);
-    asset.textContent=p; win.textContent=win+'%'; confidence.textContent='High';
-  }
-
-  scanBtn.onclick=gen;
-  clearBtn.onclick=()=>signalContainer.innerHTML='';
-  autoBtn.onclick=()=>{
-    if(auto){clearInterval(auto);auto=null;scanMode.textContent='Manual';}
-    else{gen();auto=setInterval(gen,(Math.random()*2+2)*60000);scanMode.textContent='Auto';}
-  }
-
   const popup=document.getElementById('tutorialPopup');
   function openTutorial(){popup.style.display='flex'}
   function closeTutorial(){popup.style.display='none';localStorage.setItem('qx_tutorial_seen','yes')}
-  window.onload=()=>{
-    if(!localStorage.getItem('qx_tutorial_seen')){
-      setTimeout(()=>popup.style.display='flex',6000);
-    }
-  }
+  window.onload=()=>{if(!localStorage.getItem('qx_tutorial_seen'))setTimeout(()=>popup.style.display='flex',6000)}
 </script>
 
 </body>
